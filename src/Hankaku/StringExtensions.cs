@@ -1,11 +1,15 @@
 ﻿using System.Text;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Hankaku;
 
+/// <summary>
+/// 半角文字列操作に関する拡張メソッド
+/// </summary>
 public static class StringExtensions
 {
+    /// <summary>
+    /// 半角と認識する文字リスト
+    /// </summary>
     private static List<char> hankakuList = new List<char>()
     {
         ' ',
@@ -34,6 +38,9 @@ public static class StringExtensions
         'ｰ'
     };
 
+    /// <summary>
+    /// 全角半角変換表
+    /// </summary>
     private static Dictionary<char, string> conversionMap = new Dictionary<char, string>()
     {
         {'　', " "},
@@ -88,18 +95,18 @@ public static class StringExtensions
     };
 
     /// <summary>
-    /// 半角文字に変換します。
+    /// 与えられた文字列内の全角文字を半角文字に変換します。
     /// </summary>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public static string ToHankaku(this string value)
+    /// <param name="text">対象の文字列</param>
+    /// <returns>変換された文字列</returns>
+    public static string ToHankaku(this string text)
     {
         var output = new StringBuilder();
-        foreach (char c in value)
+        foreach (char c in text)
         {
-            if (conversionMap.ContainsKey(c))
+            if (conversionMap.TryGetValue(c, out var str))
             {
-                output.Append(conversionMap[c]);
+                output.Append(str);
             }
             else
             {
@@ -110,16 +117,17 @@ public static class StringExtensions
     }
 
     /// <summary>
-    /// 半角文字を1、全角文字を2としてカウントします。
+    /// 与えられた文字列内の日本語半角文字を1、それ以外を2としてカウントします。
     /// </summary>
-    /// <param name="str"></param>
-    /// <returns></returns>
+    /// <param name="text">対象の文字列</param>
+    /// <returns>半角文字の数</returns>
     public static int CountHankaku(this string text)
     {
         int count = 0;
 
         for (int i = 0; i < text.Length;)
         {
+            // サロゲートペアの場合、2charで表現されるため専用の判定式を使用する
             if (char.IsSurrogatePair(text, i))
             {
                 count += 2;
