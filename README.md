@@ -35,9 +35,10 @@ Console.WriteLine("カウント半角: " + hankakuText.CountHankaku());
 - 文字列を左から半角文字数分だけ切り出しすることができます。残りも文字列の取得もできます。
 
 ## インストール
+[Nugetからインストールできます。](https://www.nuget.org/packages/Hankaku)
+```
 PM> Install-Package Hankaku
-
-[Nugetページはこちら。](https://www.nuget.org/packages/Hankaku)
+```
 
 ## 使い方
 
