@@ -5,6 +5,33 @@ namespace HankakuTests;
 public class LeftHankakuTest
 {
     [Fact]
+    public void Over()
+    {
+        var text = "１２３４５６７８９０".LeftHankaku(100, out var remainingText);
+
+        Assert.Equal("１２３４５６７８９０", text);
+        Assert.Equal(string.Empty, remainingText);
+    }
+
+    [Fact]
+    public void Zero()
+    {
+        var text = "１２３４５６７８９０".LeftHankaku(0, out var remainingText);
+
+        Assert.Equal(string.Empty, text);
+        Assert.Equal("１２３４５６７８９０", remainingText);
+    }
+
+    [Fact]
+    public void Minus()
+    {
+        var text = "１２３４５６７８９０".LeftHankaku(-1, out var remainingText);
+
+        Assert.Equal(string.Empty, text);
+        Assert.Equal("１２３４５６７８９０", remainingText);
+    }
+
+    [Fact]
     public void LeftTextOnly()
     {
         var text = "１２３４５６７８９０".LeftHankaku(4);

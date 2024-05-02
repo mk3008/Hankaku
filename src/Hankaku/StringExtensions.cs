@@ -169,7 +169,7 @@ public static class StringExtensions
     {
         if (string.IsNullOrEmpty(text) || hankakuCount <= 0)
         {
-            remainingText = string.Empty;
+            remainingText = text;
             return string.Empty;
         }
 
