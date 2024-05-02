@@ -32,6 +32,7 @@ Console.WriteLine("カウント半角: " + hankakuText.CountHankaku());
 - 文字列を半角文字列に変換できます。
 - 半角変更できる文字列は英数字、記号（スペース含む）、日本語カナのみです。
 - 文字列を半角文字なら1、それ以外を2としてカウントすることができます。
+- 文字列を左から半角文字数分だけ切り出しすることができます。残りも文字列の取得もできます。
 
 ## インストール
 PM> Install-Package Hankaku
@@ -50,4 +51,15 @@ public static string ToHankaku(this string text)
 与えられた文字列内の日本語半角文字を1、それ以外を2としてカウントします。
 ```cs
 public static int CountHankaku(this string text)
+```
+
+### LeftHankaku メソッド
+文字列を左から半角文字数分切り出します。
+```cs
+public static string LeftHankaku(this string text, int hankakuCount)
+```
+
+文字列を左から半角文字数分切り出し、残った文字列も取得します。
+```cs
+public static string LeftHankaku(this string text, int hankakuCount, out string remainingText)
 ```
