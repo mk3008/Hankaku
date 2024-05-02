@@ -146,4 +146,71 @@ public static class StringExtensions
         }
         return count;
     }
+
+    /// <summary>
+    /// 文字列を左から半角文字数分切り出します。
+    /// </summary>
+    /// <param name="text">処理対象の文字列。</param>
+    /// <param name="hankakuCount">左から切り出す半角文字数。負の値は許可されません。</param>
+    /// <returns>指定された文字数だけ左から切り出された文字列。</returns>
+    public static string LeftHankaku(this string text, int hankakuCount)
+    {
+        return text.LeftHankaku(hankakuCount, out _);
+    }
+
+    /// <summary>
+    /// 文字列を左から半角文字数分切り出します。
+    /// </summary>
+    /// <param name="text">処理対象の文字列。</param>
+    /// <param name="hankakuCount">左から切り出す半角文字数。負の値は許可されません。</param>
+    /// <param name="remainingText">残りの文字列。切り出された部分が全体の文字列と等しい場合は空文字列です。</param>
+    /// <returns>指定された文字数だけ左から切り出された文字列。</returns>
+    public static string LeftHankaku(this string text, int hankakuCount, out string remainingText)
+    {
+        if (string.IsNullOrEmpty(text) || hankakuCount <= 0)
+        {
+            remainingText = string.Empty;
+            return string.Empty;
+        }
+
+        int count = 0;
+        int readIndex = 0;
+
+        for (int i = 0; i < text.Length;)
+        {
+            // サロゲートペアの場合、2charで表現されるため専用の判定式を使用する
+            if (char.IsSurrogatePair(text, i))
+            {
+                count += 2;
+                i += 2;
+            }
+            else if (hankakuList.Contains(text[i]))
+            {
+                count += 1;
+                i++;
+            }
+            else
+            {
+                count += 2;
+                i++;
+            }
+
+            // 条件内であれば文字列として採用する
+            if (count <= hankakuCount)
+            {
+                readIndex = i;
+            }
+
+            // 文字数上限を超えた場合、中断する
+            if (hankakuCount <= count)
+            {
+                break;
+            }
+        }
+
+        // 残った文字列を取得する
+        remainingText = text.Substring(readIndex);
+
+        return text.Substring(0, readIndex);
+    }
 }
