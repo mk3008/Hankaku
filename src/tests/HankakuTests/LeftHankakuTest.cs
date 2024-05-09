@@ -92,4 +92,13 @@ public class LeftHankakuTest
         Assert.Equal("☺", text);
         Assert.Equal("☺☺☺☺", remainingText);
     }
+
+    [Fact]
+    public void Mixed()
+    {
+        var text = "1☺☺☺☺☺".LeftHankaku(2, out var remainingText);
+
+        Assert.Equal("1", text);
+        Assert.Equal("☺☺☺☺☺", remainingText);
+    }
 }
